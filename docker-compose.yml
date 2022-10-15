@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  ts-node-docker:
+    build:
+      context: .
+      dockerfile: dockerfile
+      target: base
+    volumes:
+      - ./src:/home/node/app/src
+      - ./nodemon.json:/home/node/app/nodemon.json
+    container_name: reddit-search
+    command: npm run dev

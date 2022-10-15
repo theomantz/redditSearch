@@ -1,9 +1,10 @@
+import * as path from "path";
 import { SES, AWSError, Config } from "aws-sdk";
 import { SendEmailRequest, SendEmailResponse } from "aws-sdk/clients/ses";
 
 const config = new Config();
 
-const sesConfig = config.loadFromPath(".config.json");
+const sesConfig = config.loadFromPath(path.join(__dirname, ".config.json"));
 
 const ses = new SES(sesConfig);
 

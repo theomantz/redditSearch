@@ -1,5 +1,7 @@
+import * as path from "path";
 import { fetch } from "./utils";
 import sendEmails from "./sendEmail";
+import fs from "fs";
 
 type ResponseJSON = {
   data: InnerResponseJSON;
@@ -18,6 +20,11 @@ type ResponseType = {
   body: string;
   url: string;
   author: string;
+};
+
+type EmailJSON = {
+  sender: string;
+  emails: string[];
 };
 
 function getRedditTixData(url: string) {
@@ -93,13 +100,17 @@ export default function main(
   getRedditTixData(url).then((response) => {
     const filteredResponses = filterResponse(filterString, response);
     if (filteredResponses.length > 0) {
-      sendEmails(
-        "alerts@alerts.mantz.nyc",
-        ["theo@mantz.nyc"],
-        "Found Your Tickets!",
-        responseToString(filteredResponses),
-        responseToHtml(filteredResponses)
-      );
+      fs.readFile(path.join(__dirname, ".emails.json"), (err, data) => {
+        if (err) return console.error(err);
+        const emailJSON: EmailJSON = JSON.parse(data.toString());
+        sendEmails(
+          emailJSON.sender,
+          emailJSON.emails,
+          "Found Your Tickets!",
+          responseToString(filteredResponses),
+          responseToHtml(filteredResponses)
+        );
+      });
     }
   });
 }
