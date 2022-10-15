@@ -10,4 +10,4 @@ services:
       - ./src:/home/node/app/src
       - ./nodemon.json:/home/node/app/nodemon.json
     container_name: reddit-search
-    command: npm run dev
+    command: npm run

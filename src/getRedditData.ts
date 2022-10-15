@@ -100,7 +100,7 @@ export default function main(
   getRedditTixData(url).then((response) => {
     const filteredResponses = filterResponse(filterString, response);
     if (filteredResponses.length > 0) {
-      fs.readFile(path.join(__dirname, ".emails.json"), (err, data) => {
+      fs.readFile(path.join(__dirname, "../.emails.json"), (err, data) => {
         if (err) return console.error(err);
         const emailJSON: EmailJSON = JSON.parse(data.toString());
         sendEmails(
